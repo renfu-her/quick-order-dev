@@ -6,7 +6,7 @@ namespace App\Filament\Resources\Stores\Schemas;
 
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\KeyValueEntry;
-use Filament\Infolists\Components\Section;
+use Filament\Schemas\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Schema;
 
