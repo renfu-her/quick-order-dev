@@ -1,0 +1,194 @@
+---
+alwaysApply: true
+---
+# Filament v4 Schema Overview (Markdown Version)
+
+## Introduction
+
+Schemas in Filament define how form inputs, table columns, infolists, and widgets are structured and displayed. They use a fluent API to describe UI elements and their behavior.
+
+Schemas are:
+
+- **Reusable**: You can define components once and reuse them across forms, tables, and widgets.
+- **Composable**: Combine multiple schema components into complex layouts.
+- **Declarative**: Describe what you want, and Filament handles the rendering.
+
+---
+
+## Common Schema Concepts
+
+### 1. Schema Definition
+
+Schemas are defined as arrays of components:
+
+```php
+use Filament\Forms;
+
+Forms\Form::make()
+    ->schema([
+        Forms\Components\TextInput::make('name'),
+        Forms\Components\TextInput::make('email'),
+    ]);
+
+```
+
+### 2. Component Types
+
+Schemas are used in multiple areas of Filament:
+
+- **Forms** → `Forms\Components`
+- **Tables** → `Tables\Columns`
+- **Infolists** → `Infolists\Components`
+- **Widgets** → `Widgets`
+
+Each area has its own set of schema components.
+
+---
+
+## Schema Composition
+
+### Nesting Components
+
+Components can contain child components, allowing you to build layouts:
+
+```php
+Forms\Components\Section::make('Contact Info')
+    ->schema([
+        Forms\Components\TextInput::make('phone'),
+        Forms\Components\TextInput::make('address'),
+    ]);
+
+```
+
+### Layout Components
+
+Common layout components:
+
+- `Section`
+- `Group`
+- `Grid`
+- `Tabs`
+
+Example:
+
+```php
+Forms\Components\Grid::make(2)
+    ->schema([
+        Forms\Components\TextInput::make('first_name'),
+        Forms\Components\TextInput::make('last_name'),
+    ]);
+
+```
+
+---
+
+## Schema Reusability
+
+You can extract schemas into classes for reuse.
+
+### Example: Extracting a Form Schema
+
+```php
+class ContactForm
+{
+    public static function schema(): array
+    {
+        return [
+            Forms\Components\TextInput::make('name'),
+            Forms\Components\TextInput::make('email'),
+        ];
+    }
+}
+
+```
+
+Usage:
+
+```php
+Forms\Form::make()->schema(ContactForm::schema());
+
+```
+
+---
+
+## Schema Customization
+
+Schemas can include validation, labels, hints, and visibility conditions.
+
+### Example: Adding Rules
+
+```php
+Forms\Components\TextInput::make('email')
+    ->email()
+    ->required()
+    ->unique();
+
+```
+
+### Example: Conditional Visibility
+
+```php
+Forms\Components\TextInput::make('company')
+    ->visible(fn ($get) => $get('is_employed'));
+
+```
+
+---
+
+## Schema in Different Contexts
+
+### Forms
+
+```php
+Forms\Form::make()
+    ->schema([
+        Forms\Components\TextInput::make('title')
+            ->required(),
+        Forms\Components\Textarea::make('description'),
+    ]);
+
+```
+
+### Tables
+
+```php
+Tables\Table::make()
+    ->columns([
+        Tables\Columns\TextColumn::make('title'),
+        Tables\Columns\TextColumn::make('created_at')->date(),
+    ]);
+
+```
+
+### Infolists
+
+```php
+Infolists\Infolist::make()
+    ->schema([
+        Infolists\Components\TextEntry::make('title'),
+        Infolists\Components\TextEntry::make('status'),
+    ]);
+
+```
+
+### Widgets
+
+```php
+Widgets\StatsOverviewWidget::make()
+    ->schema([
+        Widgets\StatsOverviewWidget\Stat::make('Users', User::count()),
+        Widgets\StatsOverviewWidget\Stat::make('Posts', Post::count()),
+    ]);
+
+```
+
+---
+
+## Summary
+
+- **Schemas are arrays of components.**
+- **They can be nested, grouped, and reused.**
+- **Forms, Tables, Infolists, and Widgets each define schemas differently.**
+- **Validation, visibility, and layout are controlled via schema methods.**
+
+Filament’s schema system provides a powerful, reusable, and declarative way to build UI components consistently across your application.

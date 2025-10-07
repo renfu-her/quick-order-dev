@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,11 +15,23 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // Create admin user for Filament
+        User::create([
+            'name' => 'Admin User',
+            'email' => 'admin@quickorder.com',
+            'password' => Hash::make('password'),
         ]);
+
+        // Seed sample data
+        $this->call([
+            ProductSeeder::class,
+            AdSeeder::class,
+            CouponSeeder::class,
+        ]);
+
+        $this->command->info('Database seeded successfully!');
+        $this->command->info('Admin credentials:');
+        $this->command->info('Email: admin@quickorder.com');
+        $this->command->info('Password: password');
     }
 }
