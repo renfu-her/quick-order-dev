@@ -114,7 +114,6 @@ class ProductForm
                                     ->openable()
                                     ->required()
                                     ->helperText('Image will be automatically converted to WebP format and optimized')
-                                    ->columnSpanFull()
                                     ->getUploadedFileNameForStorageUsing(
                                         fn($file): string => (string) str(Str::uuid7() . '.webp')
                                     )
@@ -134,9 +133,11 @@ class ProductForm
                                         if ($file) {
                                             Storage::disk('public')->delete($file);
                                         }
-                                    }),
+                                    })
+                                    ->columnSpanFull(),
                                 
                                 TextInput::make('display_order')
+                                    ->label('Display Order')
                                     ->numeric()
                                     ->default(0)
                                     ->minValue(0)
@@ -149,13 +150,13 @@ class ProductForm
                                     ->helperText('Only one image should be primary')
                                     ->columnSpanFull(),
                             ])
-                            ->columnSpanFull()
+                            ->columns(1)
                             ->reorderableWithButtons()
                             ->collapsible()
                             ->defaultItems(0)
                             ->addActionLabel('Add Image'),
                     ])
-                    ->columnSpanFull(),
+                    ->columns(1),
 
                 Section::make('Ingredients')
                     ->schema([
