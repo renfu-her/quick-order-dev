@@ -23,10 +23,10 @@ class ProductsTable
     {
         return $table
             ->columns([
-                ImageColumn::make('images.image_path')
+                ImageColumn::make('primary_image')
                     ->label('Image')
                     ->circular()
-                    ->limit(1),
+                    ->size(60),
                 
                 TextColumn::make('name')
                     ->searchable()

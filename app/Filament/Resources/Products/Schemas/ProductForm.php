@@ -99,6 +99,7 @@ class ProductForm
                                     ->label('Image')
                                     ->image()
                                     ->imageEditor()
+                                    ->disk('public')
                                     ->directory('products')
                                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                                     ->maxSize(5120) // 5MB
@@ -106,7 +107,7 @@ class ProductForm
                                     ->openable()
                                     ->required()
                                     ->helperText('Image will be automatically converted to WebP format and optimized')
-                                    ->columnSpan(2)
+                                    ->columnSpanFull()
                                     ->getUploadedFileNameForStorageUsing(
                                         fn($file): string => (string) str(Str::uuid7() . '.webp')
                                     )
@@ -131,18 +132,23 @@ class ProductForm
                                 TextInput::make('display_order')
                                     ->numeric()
                                     ->default(0)
-                                    ->minValue(0),
+                                    ->minValue(0)
+                                    ->helperText('Lower numbers appear first')
+                                    ->columnSpanFull(),
                                 
                                 Toggle::make('is_primary')
                                     ->label('Primary Image')
-                                    ->default(false),
+                                    ->default(false)
+                                    ->helperText('Only one image should be primary')
+                                    ->columnSpanFull(),
                             ])
-                            ->columns(4)
+                            ->columnSpanFull()
                             ->reorderableWithButtons()
                             ->collapsible()
                             ->defaultItems(0)
                             ->addActionLabel('Add Image'),
-                    ]),
+                    ])
+                    ->columnSpanFull(),
 
                 Section::make('Ingredients')
                     ->schema([

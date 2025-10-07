@@ -74,5 +74,11 @@ class Product extends Model
         return $this->images()->where('is_primary', true)->first() 
             ?? $this->images()->first();
     }
+
+    public function getPrimaryImageAttribute(): ?string
+    {
+        $primaryImage = $this->getPrimaryImage();
+        return $primaryImage ? asset('storage/' . $primaryImage->image_path) : null;
+    }
 }
 
