@@ -57,6 +57,7 @@ class CheckoutController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+
         $validated = $request->validate([
             'customer_name' => 'required|string|max:255',
             'customer_phone' => 'required|string|max:255',
@@ -124,8 +125,14 @@ class CheckoutController extends Controller
 
             return redirect()->route('order.confirmation', $order)->with('success', 'Order placed successfully!');
 
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             DB::rollBack();
+            \Log::error('Checkout failed', [
+                'member_id' => $member->id ?? null,
+                'cart_id' => $cart->id ?? null,
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
             return back()->with('error', 'An error occurred while processing your order. Please try again.');
         }
     }
