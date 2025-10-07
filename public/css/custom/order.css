@@ -1,0 +1,202 @@
+/**
+ * Order Confirmation Page Styles
+ */
+
+/* ==================== Confirmation Container ==================== */
+
+.confirmation-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.success-icon {
+    text-align: center;
+    font-size: 5rem;
+    margin-bottom: 1rem;
+}
+
+/* ==================== Confirmation Header ==================== */
+
+.confirmation-header {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: linear-gradient(135deg, #e63946 0%, #f77f00 100%);
+    color: white;
+    border-radius: 10px 10px 0 0;
+}
+
+.confirmation-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.confirmation-header p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+/* ==================== Order Details ==================== */
+
+.order-details {
+    background: #fff;
+    border-radius: 10px;
+    padding: 2rem;
+    margin-top: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.confirmation-content {
+    background: #fff;
+    border-radius: 0 0 10px 10px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.order-number {
+    text-align: center;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.order-number h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.order-number p {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #e63946;
+}
+
+.order-number strong {
+    color: #e63946;
+    font-size: 1.25rem;
+}
+
+/* ==================== Detail Sections ==================== */
+
+.detail-section {
+    margin-bottom: 2rem;
+}
+
+.detail-section:last-child {
+    margin-bottom: 0;
+}
+
+.order-details-section {
+    margin-bottom: 2rem;
+}
+
+.order-details-section h3 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e63946;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: #666;
+}
+
+.detail-value {
+    color: #333;
+}
+
+/* ==================== Order Items ==================== */
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.order-item:last-child {
+    border-bottom: none;
+}
+
+.item-info h4 {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.item-info p {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.item-total {
+    font-weight: 600;
+    color: #e63946;
+}
+
+/* ==================== Status Badge ==================== */
+
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-confirmed {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.status-completed {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-cancelled {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* ==================== Confirmation Actions ==================== */
+
+.confirmation-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.btn-continue {
+    background: #e63946;
+    color: white;
+    text-decoration: none;
+    padding: 1rem 2rem;
+    border-radius: 5px;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+.btn-continue:hover {
+    background: #d62839;
+}
+

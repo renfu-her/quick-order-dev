@@ -1,0 +1,235 @@
+/**
+ * Product Detail Page Styles
+ */
+
+/* ==================== Product Detail Layout ==================== */
+
+.product-detail {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+}
+
+@media (max-width: 768px) {
+    .product-detail {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==================== Product Images ==================== */
+
+.product-images {
+    position: sticky;
+    top: 100px;
+    height: fit-content;
+}
+
+.main-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    background: #f8f9fa;
+}
+
+.image-thumbnails {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 0.5rem;
+}
+
+.thumbnail {
+    width: 100%;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border 0.3s;
+}
+
+.thumbnail:hover,
+.thumbnail.active {
+    border-color: #e63946;
+}
+
+/* ==================== Product Details ==================== */
+
+.product-details h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.product-price {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #e63946;
+    margin-bottom: 1.5rem;
+}
+
+.product-price .special-price {
+    color: #e63946;
+}
+
+.product-price .original-price {
+    font-size: 1.5rem;
+    color: #999;
+    text-decoration: line-through;
+    margin-left: 0.5rem;
+}
+
+.product-description {
+    color: #666;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+}
+
+/* ==================== Temperature Options ==================== */
+
+.temperature-options {
+    margin-bottom: 1.5rem;
+}
+
+.temperature-options h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+    color: #333;
+}
+
+.temperature-radio {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.temperature-option {
+    flex: 1;
+    min-width: 100px;
+}
+
+.temperature-option input[type="radio"] {
+    display: none;
+}
+
+.temperature-option label {
+    display: block;
+    padding: 0.75rem;
+    text-align: center;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: #fff;
+}
+
+.temperature-option input[type="radio"]:checked + label {
+    border-color: #e63946;
+    background: #fff5f5;
+    color: #e63946;
+    font-weight: 600;
+}
+
+.temperature-option label:hover {
+    border-color: #e63946;
+    background: #fff5f5;
+}
+
+/* ==================== Ingredients Section ==================== */
+
+.ingredients-section {
+    margin-bottom: 2rem;
+}
+
+.ingredients-section h3 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.ingredient-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.ingredient-item:hover {
+    border-color: #e63946;
+    background: #fff5f5;
+}
+
+.ingredient-item input[type="checkbox"] {
+    margin-right: 1rem;
+    cursor: pointer;
+}
+
+.ingredient-info {
+    flex: 1;
+}
+
+.ingredient-price {
+    font-weight: 600;
+    color: #e63946;
+}
+
+/* ==================== Add to Cart Section ==================== */
+
+.add-to-cart-section {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.quantity-selector {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.qty-btn {
+    background: #e63946;
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.5rem;
+    transition: background 0.3s;
+}
+
+.qty-btn:hover {
+    background: #d62839;
+}
+
+.qty-value {
+    min-width: 50px;
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.add-to-cart-btn {
+    flex: 1;
+    background: #e63946;
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.add-to-cart-btn:hover {
+    background: #d62839;
+}
+
