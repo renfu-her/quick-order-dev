@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -14,6 +15,7 @@ class Product extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'store_id',
         'name',
         'description',
         'price',
@@ -25,6 +27,7 @@ class Product extends Model
     ];
 
     protected $casts = [
+        'store_id' => 'integer',
         'price' => 'decimal:2',
         'special_price' => 'decimal:2',
         'cold_price' => 'decimal:2',
@@ -45,6 +48,11 @@ class Product extends Model
     public function ads(): HasMany
     {
         return $this->hasMany(Ad::class);
+    }
+
+    public function store(): BelongsTo
+    {
+        return $this->belongsTo(Store::class);
     }
 
     public function getPriceForTemperature(string $temperature): float
