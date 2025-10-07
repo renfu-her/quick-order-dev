@@ -7,6 +7,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\MemberAuthController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\StoreController;
 use Illuminate\Support\Facades\Route;
 
 // Member Auth Routes
@@ -17,6 +18,10 @@ Route::post('/logout', [MemberAuthController::class, 'logout'])->name('member.lo
 
 // Frontend Routes
 Route::get('/', [FrontendController::class, 'index'])->name('home');
+
+// Store Routes
+Route::get('/stores/{store}', [StoreController::class, 'show'])->name('store.show');
+Route::post('/stores/quick-order', [StoreController::class, 'quickOrder'])->name('store.quick-order');
 
 // Product Routes
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('product.show');

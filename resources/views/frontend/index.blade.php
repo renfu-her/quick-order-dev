@@ -4,6 +4,7 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/custom/index.css?v=' . time()) }}">
+{{-- <link rel="stylesheet" href="{{ asset('css/custom/index-debug.css?v=' . time()) }}"> --}}
 @endpush
 
 @section('content')
@@ -20,64 +21,60 @@
         <h2>Our Locations</h2>
         <p>Visit us at any of our convenient locations</p>
     </div>
-    <div class="stores-grid">
+    <div class="stores-grid" style="display: grid !important; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important; gap: 2rem !important; margin-bottom: 3rem !important;">
         @foreach($stores as $store)
-        <div class="store-card">
-            @if($store->getPrimaryImage())
-            <img src="{{ asset('storage/' . $store->getPrimaryImage()->image_path) }}" 
-                 alt="{{ $store->name }}" 
-                 class="store-image">
-            @else
-            <div class="store-image" style="background: linear-gradient(135deg, #e63946 0%, #f77f00 100%);"></div>
-            @endif
-            
-            <div class="store-card-content">
-                <h3>{{ $store->name }}</h3>
-                
-                @if($store->description)
-                <p class="store-description">{{ Str::limit($store->description, 100) }}</p>
+        <a href="{{ route('store.show', $store) }}" class="store-card-link" style="text-decoration: none !important; color: inherit !important; display: block !important;">
+            <div class="store-card" style="background: #fff !important; border-radius: 10px !important; overflow: hidden !important; box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important; transition: transform 0.3s !important; cursor: pointer !important;">
+                @if($store->getPrimaryImage())
+                <img src="{{ asset('storage/' . $store->getPrimaryImage()->image_path) }}" 
+                     alt="{{ $store->name }}" 
+                     class="store-image">
+                @else
+                <div class="store-image" style="background: linear-gradient(135deg, #e63946 0%, #f77f00 100%);"></div>
                 @endif
                 
-                <div class="store-info">
-                    @if($store->address)
-                    <div class="info-item">
-                        <span class="info-icon">📍</span>
-                        <span>{{ $store->address }}</span>
-                    </div>
+                <div class="store-card-content">
+                    <h3>{{ $store->name }}</h3>
+                    
+                    @if($store->description)
+                    <p class="store-description">{{ Str::limit($store->description, 100) }}</p>
                     @endif
                     
-                    @if($store->phone)
-                    <div class="info-item">
-                        <span class="info-icon">📞</span>
-                        <a href="tel:{{ $store->phone }}" style="color: inherit; text-decoration: none;">
-                            {{ $store->phone }}
-                        </a>
+                    <div class="store-info">
+                        @if($store->address)
+                        <div class="info-item">
+                            <span class="info-icon">📍</span>
+                            <span>{{ $store->address }}</span>
+                        </div>
+                        @endif
+                        
+                        @if($store->phone)
+                        <div class="info-item">
+                            <span class="info-icon">📞</span>
+                            <span>{{ $store->phone }}</span>
+                        </div>
+                        @endif
+                        
+                        @if($store->hours)
+                        <div class="info-item">
+                            <span class="info-icon">🕐</span>
+                            <span>
+                                @php
+                                    $today = now()->format('l');
+                                    $todayHours = $store->hours[$today] ?? 'Closed';
+                                @endphp
+                                Today: {{ $todayHours }}
+                            </span>
+                        </div>
+                        @endif
                     </div>
-                    @endif
                     
-                    @if($store->hours)
-                    <div class="info-item">
-                        <span class="info-icon">🕐</span>
-                        <span>
-                            @php
-                                $today = now()->format('l');
-                                $todayHours = $store->hours[$today] ?? 'Closed';
-                            @endphp
-                            Today: {{ $todayHours }}
-                        </span>
+                    <div class="store-actions">
+                        <span class="btn btn-primary">View Store & Order</span>
                     </div>
-                    @endif
                 </div>
-                
-                @if($store->latitude && $store->longitude)
-                <a href="https://www.google.com/maps?q={{ $store->latitude }},{{ $store->longitude }}" 
-                   target="_blank" 
-                   class="btn btn-map">
-                    🗺️ View on Map
-                </a>
-                @endif
             </div>
-        </div>
+        </a>
         @endforeach
     </div>
 </section>

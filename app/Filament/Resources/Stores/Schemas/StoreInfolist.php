@@ -56,10 +56,20 @@ class StoreInfolist
 
                 Section::make('Store Images')
                     ->schema([
-                        ImageEntry::make('images.image_path')
-                            ->label('Images')
+                        ImageEntry::make('primary_image')
+                            ->label('Primary Image')
                             ->circular(false)
-                            ->size(150),
+                            ->size(200),
+                        
+                        ImageEntry::make('images')
+                            ->label('All Images')
+                            ->getStateUsing(function ($record) {
+                                return $record->images->map(function ($image) {
+                                    return asset('storage/' . $image->image_path);
+                                })->toArray();
+                            })
+                            ->circular(false)
+                            ->size(100),
                     ]),
             ]);
     }

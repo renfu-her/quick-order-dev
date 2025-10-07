@@ -30,23 +30,30 @@
 }
 
 .stores-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-bottom: 3rem;
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+    gap: 2rem !important;
+    margin-bottom: 3rem !important;
+}
+
+.store-card-link {
+    text-decoration: none !important;
+    color: inherit !important;
+    display: block !important;
 }
 
 .store-card {
-    background: #fff;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    transition: transform 0.3s;
+    background: #fff !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
+    transition: transform 0.3s !important;
+    cursor: pointer !important;
 }
 
 .store-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    transform: translateY(-5px) !important;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15) !important;
 }
 
 .store-image {
@@ -108,6 +115,33 @@
     background: #e63946;
     color: white;
     border-color: #e63946;
+}
+
+.store-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.store-actions .btn {
+    flex: 1;
+    text-align: center;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+}
+
+.store-actions .btn-primary {
+    background: #e63946;
+    color: white;
+}
+
+.store-actions .btn-primary:hover {
+    background: #d62828;
 }
 
 /* ==================== Ads Section ==================== */

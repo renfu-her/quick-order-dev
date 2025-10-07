@@ -52,4 +52,10 @@ class Store extends Model
     {
         return $this->products()->where('is_available', true);
     }
+
+    public function getPrimaryImageAttribute(): ?string
+    {
+        $primaryImage = $this->getPrimaryImage();
+        return $primaryImage ? asset('storage/' . $primaryImage->image_path) : null;
+    }
 }

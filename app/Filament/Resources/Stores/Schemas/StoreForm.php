@@ -46,31 +46,36 @@ class StoreForm
                             ->regex('/^[\d+\-()#\s]+$/')
                             ->validationMessages([
                                 'regex' => 'Phone number can only contain numbers, +, -, (), # and spaces.',
-                            ]),
+                            ])
+                            ->columnSpanFull(),
                         
                         TextInput::make('email')
                             ->email()
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->columnSpanFull(),
                         
                         Toggle::make('is_active')
                             ->label('Active')
-                            ->default(true),
+                            ->default(true)
+                            ->columnSpanFull(),
                     ])
-                    ->columns(2),
+                    ->columnSpanFull(),
 
                 Section::make('Location')
                     ->schema([
                         TextInput::make('latitude')
                             ->numeric()
                             ->step(0.00000001)
-                            ->placeholder('25.0330'),
+                            ->placeholder('25.0330')
+                            ->columnSpanFull(),
                         
                         TextInput::make('longitude')
                             ->numeric()
                             ->step(0.00000001)
-                            ->placeholder('121.5654'),
+                            ->placeholder('121.5654')
+                            ->columnSpanFull(),
                     ])
-                    ->columns(2),
+                    ->columnSpanFull(),
 
                 Section::make('Operating Hours')
                     ->schema([
@@ -82,7 +87,8 @@ class StoreForm
                             ->valuePlaceholder('09:00 - 21:00')
                             ->addActionLabel('Add Day')
                             ->columnSpanFull(),
-                    ]),
+                    ])
+                    ->columnSpanFull(),
 
                 Section::make('Store Images')
                     ->schema([
@@ -93,6 +99,7 @@ class StoreForm
                                     ->label('Image')
                                     ->image()
                                     ->imageEditor()
+                                    ->disk('public')
                                     ->directory('stores')
                                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                                     ->maxSize(5120) // 5MB
@@ -100,7 +107,7 @@ class StoreForm
                                     ->openable()
                                     ->required()
                                     ->helperText('Image will be automatically converted to WebP format and optimized')
-                                    ->columnSpan(2)
+                                    ->columnSpanFull()
                                     ->getUploadedFileNameForStorageUsing(
                                         fn($file): string => (string) str(Str::uuid7() . '.webp')
                                     )
@@ -126,19 +133,22 @@ class StoreForm
                                     ->numeric()
                                     ->default(0)
                                     ->minValue(0)
-                                    ->helperText('Lower numbers appear first'),
+                                    ->helperText('Lower numbers appear first')
+                                    ->columnSpanFull(),
                                 
                                 Toggle::make('is_primary')
                                     ->label('Primary Image')
                                     ->default(false)
-                                    ->helperText('Only one image should be primary'),
+                                    ->helperText('Only one image should be primary')
+                                    ->columnSpanFull(),
                             ])
-                            ->columns(4)
+                            ->columnSpanFull()
                             ->reorderableWithButtons()
                             ->collapsible()
                             ->defaultItems(0)
                             ->addActionLabel('Add Image'),
-                    ]),
+                    ])
+                    ->columnSpanFull(),
             ]);
     }
 }

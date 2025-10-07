@@ -1,0 +1,75 @@
+/* Debug CSS for Index Page */
+
+.stores-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+    gap: 2rem !important;
+    margin-bottom: 3rem !important;
+    background: #f0f0f0 !important; /* Debug background */
+    padding: 1rem !important;
+}
+
+.store-card-link {
+    text-decoration: none !important;
+    color: inherit !important;
+    display: block !important;
+    background: yellow !important; /* Debug background */
+    margin: 1rem !important;
+}
+
+.store-card {
+    background: #fff !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1) !important;
+    transition: transform 0.3s !important;
+    cursor: pointer !important;
+    border: 2px solid red !important; /* Debug border */
+}
+
+.store-card:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15) !important;
+}
+
+.store-image {
+    width: 100% !important;
+    height: 200px !important;
+    object-fit: cover !important;
+    background: #f8f9fa !important;
+    border: 2px solid blue !important; /* Debug border */
+}
+
+.store-card-content {
+    padding: 1.5rem !important;
+    background: #f9f9f9 !important; /* Debug background */
+}
+
+.store-actions {
+    display: flex !important;
+    gap: 0.5rem !important;
+    margin-top: 1rem !important;
+    background: #e0e0e0 !important; /* Debug background */
+    padding: 0.5rem !important;
+}
+
+.store-actions .btn {
+    flex: 1 !important;
+    text-align: center !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 5px !important;
+    text-decoration: none !important;
+    font-size: 0.9rem !important;
+    transition: all 0.3s !important;
+    border: none !important;
+    cursor: pointer !important;
+}
+
+.store-actions .btn-primary {
+    background: #e63946 !important;
+    color: white !important;
+}
+
+.store-actions .btn-primary:hover {
+    background: #d62828 !important;
+}
