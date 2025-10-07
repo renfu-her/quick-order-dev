@@ -38,7 +38,11 @@ class StoreForm
                         TextInput::make('phone')
                             ->tel()
                             ->required()
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->regex('/^[\d+\-()#\s]+$/')
+                            ->validationMessages([
+                                'regex' => 'Phone number can only contain numbers, +, -, (), # and spaces.',
+                            ]),
                         
                         TextInput::make('email')
                             ->email()
