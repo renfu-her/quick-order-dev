@@ -14,6 +14,92 @@
         margin-bottom: 3rem;
     }
     
+    /* Stores Section */
+    .stores-section {
+        margin-bottom: 3rem;
+    }
+    
+    .stores-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+    
+    .store-card {
+        background: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        transition: transform 0.3s;
+    }
+    
+    .store-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+    
+    .store-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        background: #f8f9fa;
+    }
+    
+    .store-card-content {
+        padding: 1.5rem;
+    }
+    
+    .store-card h3 {
+        margin-bottom: 0.75rem;
+        color: #333;
+        font-size: 1.25rem;
+    }
+    
+    .store-description {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        line-height: 1.5;
+    }
+    
+    .store-info {
+        margin: 1rem 0;
+    }
+    
+    .info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+        color: #555;
+        font-size: 0.9rem;
+    }
+    
+    .info-icon {
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+    
+    .btn-map {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background: #f8f9fa;
+        color: #333;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 0.9rem;
+        border: 2px solid #ddd;
+        transition: all 0.3s;
+        margin-top: 0.5rem;
+    }
+    
+    .btn-map:hover {
+        background: #e63946;
+        color: white;
+        border-color: #e63946;
+    }
+    
     .hero h1 {
         font-size: 3rem;
         margin-bottom: 1rem;
@@ -183,6 +269,76 @@
     <h1>Welcome to Quick Order</h1>
     <p>Order your favorite food quickly and easily</p>
 </div>
+
+@if($stores->count() > 0)
+<!-- Stores Section -->
+<section class="stores-section">
+    <div class="section-header">
+        <h2>Our Locations</h2>
+        <p>Visit us at any of our convenient locations</p>
+    </div>
+    <div class="stores-grid">
+        @foreach($stores as $store)
+        <div class="store-card">
+            @if($store->getPrimaryImage())
+            <img src="{{ asset('storage/' . $store->getPrimaryImage()->image_path) }}" 
+                 alt="{{ $store->name }}" 
+                 class="store-image">
+            @else
+            <div class="store-image" style="background: linear-gradient(135deg, #e63946 0%, #f77f00 100%);"></div>
+            @endif
+            
+            <div class="store-card-content">
+                <h3>{{ $store->name }}</h3>
+                
+                @if($store->description)
+                <p class="store-description">{{ Str::limit($store->description, 100) }}</p>
+                @endif
+                
+                <div class="store-info">
+                    @if($store->address)
+                    <div class="info-item">
+                        <span class="info-icon">📍</span>
+                        <span>{{ $store->address }}</span>
+                    </div>
+                    @endif
+                    
+                    @if($store->phone)
+                    <div class="info-item">
+                        <span class="info-icon">📞</span>
+                        <a href="tel:{{ $store->phone }}" style="color: inherit; text-decoration: none;">
+                            {{ $store->phone }}
+                        </a>
+                    </div>
+                    @endif
+                    
+                    @if($store->hours)
+                    <div class="info-item">
+                        <span class="info-icon">🕐</span>
+                        <span>
+                            @php
+                                $today = now()->format('l');
+                                $todayHours = $store->hours[$today] ?? 'Closed';
+                            @endphp
+                            Today: {{ $todayHours }}
+                        </span>
+                    </div>
+                    @endif
+                </div>
+                
+                @if($store->latitude && $store->longitude)
+                <a href="https://www.google.com/maps?q={{ $store->latitude }},{{ $store->longitude }}" 
+                   target="_blank" 
+                   class="btn btn-map">
+                    🗺️ View on Map
+                </a>
+                @endif
+            </div>
+        </div>
+        @endforeach
+    </div>
+</section>
+@endif
 
 @if($ads->count() > 0)
 <!-- Ads Section -->
