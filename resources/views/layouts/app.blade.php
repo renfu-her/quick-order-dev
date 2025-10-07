@@ -32,8 +32,18 @@
                 
                 <div style="display: flex; gap: 1rem; align-items: center;">
                     @auth('member')
+                        @php
+                            $cart = \App\Models\Cart::where('member_id', auth('member')->id())
+                                ->where('status', 'active')
+                                ->with('items')
+                                ->first();
+                            $cartQty = $cart ? $cart->items->sum('quantity') : 0;
+                        @endphp
                         <a href="{{ route('cart.index') }}" class="cart-badge cart-inline">
                             🛒 Cart
+                            @if($cartQty > 0)
+                                <span class="cart-count">{{ $cartQty }}</span>
+                            @endif
                         </a>
                         <span style="color: #666;">👤 {{ Auth::guard('member')->user()->name }}</span>
                         <form action="{{ route('member.logout') }}" method="POST" style="margin: 0;">

@@ -54,9 +54,25 @@ class Order extends Model
     {
         $prefix = 'ORD';
         $date = now()->format('Ymd');
-        $random = strtoupper(substr(md5((string) microtime()), 0, 6));
         
-        return "{$prefix}{$date}{$random}";
+        // 查詢今天的最後一筆訂單號
+        $lastOrder = self::where('order_number', 'like', "{$prefix}{$date}%")
+            ->orderBy('order_number', 'desc')
+            ->first();
+        
+        if ($lastOrder) {
+            // 取出流水號部分並遞增
+            $lastSequence = (int) substr($lastOrder->order_number, -4);
+            $newSequence = $lastSequence + 1;
+        } else {
+            // 今天第一筆訂單
+            $newSequence = 1;
+        }
+        
+        // 格式化為 4 位數字，不足補 0
+        $sequence = str_pad((string) $newSequence, 4, '0', STR_PAD_LEFT);
+        
+        return "{$prefix}{$date}{$sequence}";
     }
 
     public function canBeCancelled(): bool

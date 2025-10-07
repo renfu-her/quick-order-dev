@@ -87,13 +87,19 @@ nav {
 }
 
 .cart-count {
-    background: #fff;
-    color: #e63946;
-    border-radius: 50%;
-    padding: 2px 8px;
-    font-size: 0.85rem;
-    font-weight: bold;
-    margin-left: 5px;
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background: #e63946; /* badge red */
+    color: #fff;
+    border-radius: 9999px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 18px;
+    text-align: center;
 }
 
 /* ==================== Footer Styles ==================== */
