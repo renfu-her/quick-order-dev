@@ -13,6 +13,7 @@
     
     <!-- Custom Styles -->
     <link rel="stylesheet" href="{{ asset('css/custom.css?v=' . time()) }}">
+    <link rel="stylesheet" href="{{ asset('css/custom/toast.css?v=' . time()) }}">
     
     @stack('styles')
 </head>
@@ -131,6 +132,9 @@
             </div>
         </div>
     </footer>
+    
+    <!-- Toast Notification System -->
+    <script src="{{ asset('js/toast.js?v=' . time()) }}"></script>
     
     @stack('scripts')
 </body>

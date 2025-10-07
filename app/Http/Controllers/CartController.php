@@ -152,9 +152,13 @@ class CartController extends Controller
         // Update cart totals
         $this->updateCartTotals($cart);
 
+        // Get updated cart count
+        $cartCount = $cart->items()->sum('quantity');
+
         return response()->json([
             'success' => true,
-            'message' => 'Item added to cart successfully!'
+            'message' => 'Item added to cart successfully!',
+            'cart_count' => $cartCount
         ]);
     }
 

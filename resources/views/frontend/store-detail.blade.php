@@ -579,19 +579,28 @@ document.getElementById('addToCartForm').addEventListener('submit', function(e) 
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            alert('Item added to cart successfully!');
+            successToast('Item added to cart successfully!');
             closeAddToCartModal();
-            // Optionally redirect to cart or show cart count
-            if (confirm('Would you like to view your cart?')) {
-                window.location.href = '{{ route("cart.index") }}';
+            
+            // Update cart count if element exists
+            const cartBadge = document.querySelector('.cart-count');
+            if (cartBadge && data.cart_count) {
+                cartBadge.textContent = data.cart_count;
             }
+            
+            // Optionally redirect to cart after 1 second
+            setTimeout(() => {
+                if (confirm('Would you like to view your cart?')) {
+                    window.location.href = '{{ route("cart.index") }}';
+                }
+            }, 500);
         } else {
-            alert('Error: ' + (data.message || 'Failed to add item to cart'));
+            errorToast(data.message || 'Failed to add item to cart');
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('An error occurred while adding item to cart');
+        errorToast('An error occurred while adding item to cart');
     });
 });
 </script>
