@@ -43,9 +43,12 @@ class AdForm
                         
                         Select::make('product_id')
                             ->label('Related Product')
-                            ->options(Product::query()->pluck('name', 'id'))
+                            ->options(Product::whereNotNull('name')
+                                ->where('name', '!=', '')
+                                ->pluck('name', 'id')
+                                ->map(fn($name) => $name ?: 'Unknown Product')
+                                ->toArray())
                             ->searchable()
-                            ->preload()
                             ->nullable(),
                     ])
                     ->columns(2),

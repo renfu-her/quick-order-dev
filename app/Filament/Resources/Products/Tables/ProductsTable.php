@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Products\Tables;
 
 use App\Models\Product;
+use App\Models\Store;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -58,7 +59,7 @@ class ProductsTable
                 
                 TextColumn::make('ingredient_limit')
                     ->label('Ingredient Limit')
-                    ->formatStateUsing(fn (int $state): string => $state === 0 ? 'Unlimited' : $state)
+                    ->formatStateUsing(fn (int $state): string => $state === 0 ? 'Unlimited' : (string) $state)
                     ->badge()
                     ->color(fn (int $state): string => $state === 0 ? 'warning' : 'primary'),
                 
@@ -69,12 +70,21 @@ class ProductsTable
             ])
             ->filters([
                 SelectFilter::make('store_id')
-                    ->relationship('store', 'name')
-                    ->searchable()
-                    ->preload(),
+                    ->options(Store::whereNotNull('name')
+                        ->where('name', '!=', '')
+                        ->whereNull('deleted_at')
+                        ->pluck('name', 'id')
+                        ->map(fn($name) => $name ?: 'Unknown Store')
+                        ->toArray())
+                    ->searchable(),
                 
                 SelectFilter::make('category')
-                    ->options(fn () => Product::query()->pluck('category', 'category')->unique()),
+                    ->options(fn () => Product::whereNotNull('category')
+                        ->where('category', '!=', '')
+                        ->pluck('category', 'category')
+                        ->unique()
+                        ->map(fn($category) => $category ?: 'Uncategorized')
+                        ->toArray()),
                 
                 TernaryFilter::make('is_available')
                     ->label('Availability')

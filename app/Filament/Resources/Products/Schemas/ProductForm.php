@@ -28,9 +28,13 @@ class ProductForm
                     ->schema([
                         Select::make('store_id')
                             ->label('Store')
-                            ->relationship('store', 'name')
+                            ->options(Store::whereNotNull('name')
+                                ->where('name', '!=', '')
+                                ->whereNull('deleted_at')
+                                ->pluck('name', 'id')
+                                ->map(fn($name) => $name ?: 'Unknown Store')
+                                ->toArray())
                             ->searchable()
-                            ->preload()
                             ->required()
                             ->createOptionForm([
                                 TextInput::make('name')->required(),
