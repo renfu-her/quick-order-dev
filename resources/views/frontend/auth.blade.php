@@ -162,48 +162,6 @@
     </div>
 </div>
 
-@push('styles')
-<style>
-    .divider {
-        position: relative;
-        text-align: center;
-        margin: 2rem 0;
-    }
-    
-    .divider::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 0;
-        right: 0;
-        height: 1px;
-        background: #ddd;
-    }
-    
-    .divider span {
-        position: relative;
-        background: #fff;
-        padding: 0 1rem;
-        color: #999;
-    }
-    
-    .text-center {
-        text-align: center;
-    }
-    
-    .text-link {
-        color: #e63946;
-        text-decoration: none;
-        font-weight: 600;
-        transition: color 0.3s;
-    }
-    
-    .text-link:hover {
-        color: #d62839;
-        text-decoration: underline;
-    }
-</style>
-@endpush
 
 @push('scripts')
 <script>

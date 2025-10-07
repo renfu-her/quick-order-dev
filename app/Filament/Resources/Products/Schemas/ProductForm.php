@@ -13,6 +13,10 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Str;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
+use Illuminate\Support\Facades\Storage;
 
 class ProductForm
 {
@@ -94,9 +98,35 @@ class ProductForm
                                 FileUpload::make('image_path')
                                     ->label('Image')
                                     ->image()
+                                    ->imageEditor()
                                     ->directory('products')
+                                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                                    ->maxSize(5120) // 5MB
+                                    ->downloadable()
+                                    ->openable()
                                     ->required()
-                                    ->columnSpan(2),
+                                    ->helperText('Image will be automatically converted to WebP format and optimized')
+                                    ->columnSpan(2)
+                                    ->getUploadedFileNameForStorageUsing(
+                                        fn($file): string => (string) str(Str::uuid7() . '.webp')
+                                    )
+                                    ->saveUploadedFileUsing(function ($file) {
+                                        $manager = new ImageManager(new Driver());
+                                        $image = $manager->read($file);
+                                        $image->scale(width: 1200, height: 900);
+                                        $filename = Str::uuid7()->toString() . '.webp';
+                                        
+                                        if (!file_exists(storage_path('app/public/products'))) {
+                                            mkdir(storage_path('app/public/products'), 0755, true);
+                                        }
+                                        $image->toWebp(80)->save(storage_path('app/public/products/' . $filename));
+                                        return 'products/' . $filename;
+                                    })
+                                    ->deleteUploadedFileUsing(function ($file) {
+                                        if ($file) {
+                                            Storage::disk('public')->delete($file);
+                                        }
+                                    }),
                                 
                                 TextInput::make('display_order')
                                     ->numeric()

@@ -30,10 +30,6 @@ class StoresTable
                     ->searchable()
                     ->sortable(),
                 
-                TextColumn::make('address')
-                    ->searchable()
-                    ->limit(50),
-                
                 TextColumn::make('phone')
                     ->searchable()
                     ->copyable(),

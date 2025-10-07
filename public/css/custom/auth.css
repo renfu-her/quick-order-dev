@@ -102,3 +102,27 @@
     text-decoration: underline;
 }
 
+/* ==================== Additional Styles ==================== */
+
+/* Button in auth (override) */
+.auth-content .btn {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+.auth-content .btn-primary {
+    background: #e63946;
+    color: white;
+}
+
+.auth-content .btn-primary:hover {
+    background: #d62839;
+}
+

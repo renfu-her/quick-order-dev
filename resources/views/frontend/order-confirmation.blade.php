@@ -113,57 +113,5 @@
     </div>
 </div>
 
-@push('styles')
-<style>
-    .success-icon {
-        text-align: center;
-        font-size: 5rem;
-        margin-bottom: 1rem;
-    }
-    
-    .order-details {
-        background: #fff;
-        border-radius: 10px;
-        padding: 2rem;
-        margin-top: 2rem;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-    
-    .detail-section {
-        margin-bottom: 2rem;
-    }
-    
-    .detail-section:last-child {
-        margin-bottom: 0;
-    }
-    
-    .status-badge {
-        padding: 0.25rem 0.75rem;
-        border-radius: 15px;
-        font-size: 0.9rem;
-        font-weight: 600;
-    }
-    
-    .status-pending {
-        background: #fff3cd;
-        color: #856404;
-    }
-    
-    .status-confirmed {
-        background: #d1ecf1;
-        color: #0c5460;
-    }
-    
-    .status-completed {
-        background: #d4edda;
-        color: #155724;
-    }
-    
-    .status-cancelled {
-        background: #f8d7da;
-        color: #721c24;
-    }
-</style>
-@endpush
 
 @endsection
