@@ -37,3 +37,20 @@ Route::post('/cart/apply-coupon', [CartController::class, 'applyCoupon'])->name(
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
 Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 Route::get('/order/{order}/confirmation', [CheckoutController::class, 'confirmation'])->name('order.confirmation');
+
+// Toast Demo Routes (for testing)
+Route::get('/toast-demo', function () {
+    return view('frontend.toast-demo');
+})->name('toast.demo');
+
+Route::get('/toast-demo/flash/{type}', function ($type) {
+    $messages = [
+        'success' => 'This is a success message from Laravel session!',
+        'error' => 'This is an error message from Laravel session!',
+        'warning' => 'This is a warning message from Laravel session!',
+        'info' => 'This is an info message from Laravel session!',
+    ];
+    
+    return redirect()->route('toast.demo')
+        ->with($type, $messages[$type] ?? 'Test message');
+})->name('toast.demo.flash');
