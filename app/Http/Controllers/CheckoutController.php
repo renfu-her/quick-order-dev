@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
@@ -101,6 +102,7 @@ class CheckoutController extends Controller
 
             // Create order
             $order = Order::create([
+                'member_id' => Auth::guard('member')->id(),
                 'order_number' => Order::generateOrderNumber(),
                 'customer_name' => $validated['customer_name'],
                 'customer_phone' => $validated['customer_phone'],

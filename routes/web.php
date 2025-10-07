@@ -5,8 +5,15 @@ declare(strict_types=1);
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\MemberAuthController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
+
+// Member Auth Routes
+Route::get('/auth', [MemberAuthController::class, 'showAuth'])->name('member.auth');
+Route::post('/login', [MemberAuthController::class, 'login'])->name('member.login');
+Route::post('/register', [MemberAuthController::class, 'register'])->name('member.register');
+Route::post('/logout', [MemberAuthController::class, 'logout'])->name('member.logout');
 
 // Frontend Routes
 Route::get('/', [FrontendController::class, 'index'])->name('home');

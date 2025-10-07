@@ -24,14 +24,20 @@ class DatabaseSeeder extends Seeder
 
         // Seed sample data
         $this->call([
+            MemberSeeder::class,
             ProductSeeder::class,
             AdSeeder::class,
             CouponSeeder::class,
         ]);
 
         $this->command->info('Database seeded successfully!');
-        $this->command->info('Admin credentials:');
+        $this->command->info('');
+        $this->command->info('=== Admin Credentials (Backend) ===');
         $this->command->info('Email: admin@quickorder.com');
+        $this->command->info('Password: password');
+        $this->command->info('');
+        $this->command->info('=== Member Credentials (Frontend) ===');
+        $this->command->info('Email: member@test.com');
         $this->command->info('Password: password');
     }
 }

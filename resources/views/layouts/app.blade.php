@@ -186,12 +186,28 @@
                     <li><a href="#">Contact</a></li>
                 </ul>
                 
-                <a href="{{ route('cart.index') }}" class="cart-badge">
-                    🛒 Cart
-                    @if(session('cart') && count(session('cart', [])) > 0)
-                        <span class="cart-count">{{ array_sum(array_column(session('cart', []), 'quantity')) }}</span>
-                    @endif
-                </a>
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                    @auth('member')
+                        <span style="color: #666;">👤 {{ Auth::guard('member')->user()->name }}</span>
+                        <form action="{{ route('member.logout') }}" method="POST" style="margin: 0;">
+                            @csrf
+                            <button type="submit" style="background: none; border: none; color: #e63946; cursor: pointer; font-weight: 500;">
+                                Logout
+                            </button>
+                        </form>
+                    @else
+                        <a href="{{ route('member.auth') }}" style="color: #666; text-decoration: none; font-weight: 500;">
+                            Login / Register
+                        </a>
+                    @endauth
+                    
+                    <a href="{{ route('cart.index') }}" class="cart-badge">
+                        🛒 Cart
+                        @if(session('cart') && count(session('cart', [])) > 0)
+                            <span class="cart-count">{{ array_sum(array_column(session('cart', []), 'quantity')) }}</span>
+                        @endif
+                    </a>
+                </div>
             </nav>
         </div>
     </header>

@@ -14,7 +14,7 @@ class Order extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
+        'member_id',
         'order_number',
         'customer_name',
         'customer_phone',
@@ -35,9 +35,9 @@ class Order extends Model
         'total_amount' => 'decimal:2',
     ];
 
-    public function user(): BelongsTo
+    public function member(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Member::class);
     }
 
     public function coupon(): BelongsTo

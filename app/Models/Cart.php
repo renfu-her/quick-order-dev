@@ -14,14 +14,14 @@ class Cart extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
+        'member_id',
         'session_id',
         'coupon_id',
     ];
 
-    public function user(): BelongsTo
+    public function member(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Member::class);
     }
 
     public function coupon(): BelongsTo

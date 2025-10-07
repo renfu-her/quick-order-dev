@@ -205,7 +205,7 @@
                                    id="customer_name" 
                                    name="customer_name" 
                                    class="form-control @error('customer_name') error @enderror" 
-                                   value="{{ old('customer_name') }}" 
+                                   value="{{ old('customer_name', Auth::guard('member')->user()->name ?? '') }}" 
                                    required>
                             @error('customer_name')
                             <div class="error-message">{{ $message }}</div>
@@ -218,7 +218,7 @@
                                    id="customer_phone" 
                                    name="customer_phone" 
                                    class="form-control @error('customer_phone') error @enderror" 
-                                   value="{{ old('customer_phone') }}" 
+                                   value="{{ old('customer_phone', Auth::guard('member')->user()->phone ?? '') }}" 
                                    required>
                             @error('customer_phone')
                             <div class="error-message">{{ $message }}</div>
@@ -231,7 +231,7 @@
                                    id="customer_email" 
                                    name="customer_email" 
                                    class="form-control @error('customer_email') error @enderror" 
-                                   value="{{ old('customer_email') }}">
+                                   value="{{ old('customer_email', Auth::guard('member')->user()->email ?? '') }}">
                             @error('customer_email')
                             <div class="error-message">{{ $message }}</div>
                             @enderror
