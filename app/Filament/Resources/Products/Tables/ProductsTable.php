@@ -56,6 +56,12 @@ class ProductsTable
                     ->boolean()
                     ->sortable(),
                 
+                TextColumn::make('ingredient_limit')
+                    ->label('Ingredient Limit')
+                    ->formatStateUsing(fn (int $state): string => $state === 0 ? 'Unlimited' : $state)
+                    ->badge()
+                    ->color(fn (int $state): string => $state === 0 ? 'warning' : 'primary'),
+                
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

@@ -55,6 +55,13 @@ class ProductForm
                         Toggle::make('is_available')
                             ->label('Available')
                             ->default(true),
+                        
+                        TextInput::make('ingredient_limit')
+                            ->label('Ingredient Limit')
+                            ->numeric()
+                            ->minValue(0)
+                            ->default(3)
+                            ->helperText('Maximum number of ingredients allowed. 0 means unlimited.'),
                     ])
                     ->columns(2),
 

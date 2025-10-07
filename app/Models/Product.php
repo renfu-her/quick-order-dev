@@ -24,6 +24,7 @@ class Product extends Model
         'hot_price',
         'category',
         'is_available',
+        'ingredient_limit',
     ];
 
     protected $casts = [
@@ -33,6 +34,7 @@ class Product extends Model
         'cold_price' => 'decimal:2',
         'hot_price' => 'decimal:2',
         'is_available' => 'boolean',
+        'ingredient_limit' => 'integer',
     ];
 
     public function images(): HasMany

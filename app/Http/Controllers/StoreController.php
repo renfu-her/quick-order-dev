@@ -22,7 +22,9 @@ class StoreController extends Controller
 
         $products = $store->products()
             ->where('is_available', true)
-            ->with(['images'])
+            ->with(['images', 'ingredients' => function ($query) {
+                $query->where('is_available', true);
+            }])
             ->orderBy('name')
             ->get();
 
@@ -45,10 +47,8 @@ class StoreController extends Controller
             'product_id' => 'required|exists:products,id',
             'store_id' => 'required|exists:stores,id',
             'quantity' => 'required|integer|min:1|max:10',
-            'variant' => 'required|in:regular,hot,cold',
-            'customer_name' => 'required|string|max:255',
-            'customer_phone' => 'required|string|max:255',
-            'customer_email' => 'nullable|email|max:255',
+            'temperature' => 'required|in:regular,hot,cold',
+            'ingredient_ids' => 'nullable|string',
             'special_instructions' => 'nullable|string|max:500',
         ]);
 
@@ -56,32 +56,66 @@ class StoreController extends Controller
             $product = Product::findOrFail($request->product_id);
             $store = Store::findOrFail($request->store_id);
 
-            // Calculate price based on variant
-            $price = $this->calculatePrice($product, $request->variant);
-            $totalAmount = $price * $request->quantity;
+            // Calculate price based on temperature
+            $price = $this->calculatePrice($product, $request->temperature);
+            
+            // Calculate ingredient extras and validate limit
+            $ingredientExtras = 0;
+            if ($request->ingredient_ids) {
+                $ingredientIds = json_decode($request->ingredient_ids, true);
+                if (is_array($ingredientIds)) {
+                    // Check ingredient limit
+                    $ingredientLimit = $product->ingredient_limit ?? 3;
+                    if ($ingredientLimit > 0 && count($ingredientIds) > $ingredientLimit) {
+                        return response()->json([
+                            'success' => false,
+                            'message' => "Maximum {$ingredientLimit} ingredients allowed for this product.",
+                        ], 422);
+                    }
+                    
+                    $ingredients = $product->ingredients()->whereIn('id', $ingredientIds)->get();
+                    $ingredientExtras = $ingredients->sum('extra_price');
+                }
+            }
+            
+            $totalAmount = ($price + $ingredientExtras) * $request->quantity;
+
+            // Get customer information from authenticated member or use defaults
+            $member = auth('member')->user();
+            $customerName = $member ? $member->name : 'Guest Customer';
+            $customerPhone = $member ? $member->phone : 'N/A';
+            $customerEmail = $member ? $member->email : null;
 
             // Create order
             $order = $store->orders()->create([
                 'order_number' => 'QO-' . time() . '-' . rand(1000, 9999),
-                'customer_name' => $request->customer_name,
-                'customer_phone' => $request->customer_phone,
-                'customer_email' => $request->customer_email,
+                'customer_name' => $customerName,
+                'customer_phone' => $customerPhone,
+                'customer_email' => $customerEmail,
                 'total_amount' => $totalAmount,
                 'status' => 'pending',
                 'order_type' => 'quick_order',
                 'special_instructions' => $request->special_instructions,
-                'member_id' => auth('member')->id(), // If member is logged in
+                'member_id' => $member ? $member->id : null,
             ]);
 
             // Create order item
-            $order->items()->create([
+            $orderItem = $order->items()->create([
                 'product_id' => $product->id,
                 'quantity' => $request->quantity,
                 'unit_price' => $price,
                 'total_price' => $totalAmount,
-                'variant' => $request->variant,
+                'variant' => $request->temperature,
                 'special_instructions' => $request->special_instructions,
             ]);
+            
+            // Attach selected ingredients to order item
+            if ($request->ingredient_ids) {
+                $ingredientIds = json_decode($request->ingredient_ids, true);
+                if (is_array($ingredientIds)) {
+                    $orderItem->ingredients()->attach($ingredientIds);
+                }
+            }
 
             return response()->json([
                 'success' => true,
@@ -101,9 +135,9 @@ class StoreController extends Controller
     /**
      * Calculate price based on product variant
      */
-    private function calculatePrice(Product $product, string $variant): float
+    private function calculatePrice(Product $product, string $temperature): float
     {
-        return match ($variant) {
+        return match ($temperature) {
             'hot' => $product->hot_price ?? $product->price,
             'cold' => $product->cold_price ?? $product->price,
             default => $product->special_price ?? $product->price,
