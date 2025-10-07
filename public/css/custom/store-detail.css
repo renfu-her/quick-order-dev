@@ -263,6 +263,9 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .product-card:hover {
@@ -287,6 +290,19 @@
 
 .product-info {
     padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.product-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-bottom {
+    margin-top: auto;
 }
 
 .product-name {
@@ -303,7 +319,7 @@
 }
 
 .product-pricing {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .price-row {

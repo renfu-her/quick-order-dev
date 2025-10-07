@@ -24,33 +24,33 @@
         </div>
     @else
         <div class="cart-items">
-            @foreach($cartItems as $index => $item)
+            @foreach($cartItems as $item)
             <div class="cart-item">
                 @if($item['product']->getPrimaryImage())
                 <img src="{{ asset('storage/' . $item['product']->getPrimaryImage()->image_path) }}" 
-                     alt="{{ $item['product']->name }}" 
+                     alt="{{ $item['product_name'] }}" 
                      class="item-image">
                 @else
                 <div class="item-image"></div>
                 @endif
                 
                 <div class="item-details">
-                    <h3>{{ $item['product']->name }}</h3>
+                    <h3>{{ $item['product_name'] }}</h3>
                     <div class="item-meta">
-                        @if($item['temperature'] !== 'none')
+                        @if($item['temperature'] !== 'regular')
                             Temperature: <strong>{{ ucfirst($item['temperature']) }}</strong><br>
                         @endif
                         Unit Price: ${{ number_format($item['unit_price'], 2) }}
                     </div>
                     <div class="item-price">
-                        Subtotal: ${{ number_format($item['unit_price'] * $item['quantity'], 2) }}
+                        Subtotal: ${{ number_format($item['subtotal'], 2) }}
                     </div>
                 </div>
                 
                 <div class="item-actions">
                     <form action="{{ route('cart.update') }}" method="POST" class="quantity-control">
                         @csrf
-                        <input type="hidden" name="index" value="{{ $index }}">
+                        <input type="hidden" name="item_id" value="{{ $item['id'] }}">
                         <button type="button" class="quantity-btn" onclick="updateQuantity(this.form, -1)">−</button>
                         <input type="number" name="quantity" value="{{ $item['quantity'] }}" 
                                min="1" max="99" class="quantity-input" 
@@ -60,7 +60,7 @@
                     
                     <form action="{{ route('cart.remove') }}" method="POST">
                         @csrf
-                        <input type="hidden" name="index" value="{{ $index }}">
+                        <input type="hidden" name="item_id" value="{{ $item['id'] }}">
                         <button type="submit" class="remove-btn" onclick="return confirm('Remove this item from cart?')">
                             🗑️ Remove
                         </button>

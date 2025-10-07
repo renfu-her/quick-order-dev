@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
+use App\Models\CartItem;
 use App\Models\Coupon;
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,36 +20,37 @@ class CheckoutController extends Controller
 {
     public function index(): View
     {
-        $cart = session('cart', []);
+        $member = auth('member')->user();
         
-        if (empty($cart)) {
-            return redirect()->route('cart.index');
+        if (!$member) {
+            return redirect()->route('member.auth')->with('error', 'Please login to checkout.');
         }
 
-        $appliedCouponCode = session('applied_coupon');
-        $appliedCoupon = null;
+        $cart = Cart::where('member_id', $member->id)
+            ->where('status', 'active')
+            ->with(['items.product', 'coupon'])
+            ->first();
 
-        $cartItems = array_map(function ($item) {
-            $product = Product::find($item['product_id']);
+        if (!$cart || $cart->items->isEmpty()) {
+            return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
+        }
+
+        $cartItems = $cart->items->map(function ($item) {
             return [
-                'product' => $product,
-                'quantity' => $item['quantity'],
-                'temperature' => $item['temperature'],
-                'unit_price' => $item['unit_price'],
+                'id' => $item->id,
+                'product' => $item->product,
+                'product_name' => $item->product_name,
+                'quantity' => $item->quantity,
+                'temperature' => $item->temperature,
+                'unit_price' => $item->unit_price,
+                'subtotal' => $item->subtotal,
             ];
-        }, $cart);
+        });
 
-        $subtotal = collect($cartItems)->sum(fn($item) => $item['unit_price'] * $item['quantity']);
-        $discount = 0;
-
-        if ($appliedCouponCode) {
-            $appliedCoupon = Coupon::where('code', $appliedCouponCode)->first();
-            if ($appliedCoupon && $appliedCoupon->isValid($subtotal)) {
-                $discount = $appliedCoupon->calculateDiscount($subtotal);
-            }
-        }
-
-        $total = max(0, $subtotal - $discount);
+        $subtotal = $cart->subtotal;
+        $discount = $cart->discount_amount;
+        $total = $cart->total_amount;
+        $appliedCoupon = $cart->coupon;
 
         return view('frontend.checkout', compact('cartItems', 'subtotal', 'discount', 'total', 'appliedCoupon'));
     }
@@ -61,78 +65,62 @@ class CheckoutController extends Controller
             'notes' => 'nullable|string|max:1000',
         ]);
 
-        $cart = session('cart', []);
-        
-        if (empty($cart)) {
-            return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
+        $member = auth('member')->user();
+        if (!$member) {
+            return redirect()->route('member.auth')->with('error', 'Please login to checkout.');
         }
 
-        $appliedCouponCode = session('applied_coupon');
+        $cart = Cart::where('member_id', $member->id)
+            ->where('status', 'active')
+            ->with(['items', 'coupon'])
+            ->first();
+
+        if (!$cart || $cart->items->isEmpty()) {
+            return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
+        }
 
         try {
             DB::beginTransaction();
 
-            // Calculate order totals
-            $cartItems = array_map(function ($item) {
-                $product = Product::find($item['product_id']);
-                return [
-                    'product' => $product,
-                    'quantity' => $item['quantity'],
-                    'temperature' => $item['temperature'],
-                    'unit_price' => $item['unit_price'],
-                ];
-            }, $cart);
-
-            $subtotal = collect($cartItems)->sum(fn($item) => $item['unit_price'] * $item['quantity']);
-            $discount = 0;
-            $couponId = null;
-
-            if ($appliedCouponCode) {
-                $coupon = Coupon::where('code', $appliedCouponCode)->first();
-                if ($coupon && $coupon->isValid($subtotal)) {
-                    $discount = $coupon->calculateDiscount($subtotal);
-                    $couponId = $coupon->id;
-                    
-                    // Increment usage count
-                    $coupon->increment('used_count');
-                }
-            }
-
-            $total = max(0, $subtotal - $discount);
-
-            // Create order
+            // Create order from cart
             $order = Order::create([
-                'member_id' => Auth::guard('member')->id(),
+                'member_id' => $member->id,
                 'order_number' => Order::generateOrderNumber(),
                 'customer_name' => $validated['customer_name'],
                 'customer_phone' => $validated['customer_phone'],
                 'customer_email' => $validated['customer_email'],
                 'payment_method' => $validated['payment_method'],
                 'notes' => $validated['notes'],
-                'subtotal' => $subtotal,
-                'discount_amount' => $discount,
-                'total_amount' => $total,
-                'coupon_id' => $couponId,
+                'subtotal' => $cart->subtotal,
+                'discount_amount' => $cart->discount_amount,
+                'total_amount' => $cart->total_amount,
+                'coupon_id' => $cart->coupon_id,
                 'status' => 'pending',
                 'payment_status' => $validated['payment_method'] === 'cash' ? 'pending' : 'pending',
             ]);
 
-            // Create order items
-            foreach ($cartItems as $item) {
-                $order->items()->create([
-                    'product_id' => $item['product']->id,
-                    'product_name' => $item['product']->name,
-                    'quantity' => $item['quantity'],
-                    'temperature' => $item['temperature'],
-                    'unit_price' => $item['unit_price'],
-                    'subtotal' => $item['unit_price'] * $item['quantity'],
+            // Create order items from cart items
+            foreach ($cart->items as $cartItem) {
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $cartItem->product_id,
+                    'product_name' => $cartItem->product_name,
+                    'quantity' => $cartItem->quantity,
+                    'temperature' => $cartItem->temperature,
+                    'unit_price' => $cartItem->unit_price,
+                    'subtotal' => $cartItem->subtotal,
                 ]);
             }
 
-            DB::commit();
+            // Increment coupon usage if applied
+            if ($cart->coupon) {
+                $cart->coupon->increment('used_count');
+            }
 
-            // Clear cart
-            session()->forget(['cart', 'applied_coupon']);
+            // Mark cart as converted
+            $cart->update(['status' => 'converted']);
+
+            DB::commit();
 
             return redirect()->route('order.confirmation', $order)->with('success', 'Order placed successfully!');
 

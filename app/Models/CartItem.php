@@ -15,14 +15,17 @@ class CartItem extends Model
     protected $fillable = [
         'cart_id',
         'product_id',
+        'product_name',
         'quantity',
         'temperature',
         'unit_price',
+        'subtotal',
     ];
 
     protected $casts = [
         'quantity' => 'integer',
         'unit_price' => 'decimal:2',
+        'subtotal' => 'decimal:2',
     ];
 
     public function cart(): BelongsTo
@@ -36,6 +39,11 @@ class CartItem extends Model
     }
 
     public function getSubtotal(): float
+    {
+        return (float) $this->subtotal;
+    }
+    
+    public function calculateSubtotal(): float
     {
         return (float) $this->unit_price * $this->quantity;
     }

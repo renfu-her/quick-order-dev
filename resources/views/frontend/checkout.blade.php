@@ -106,9 +106,9 @@
                         
                         @foreach($cartItems as $item)
                         <div class="summary-item">
-                            <span class="item-name">{{ $item['product']->name }}</span>
+                            <span class="item-name">{{ $item['product_name'] }}</span>
                             <span class="item-quantity">×{{ $item['quantity'] }}</span>
-                            <span class="item-price">${{ number_format($item['unit_price'] * $item['quantity'], 2) }}</span>
+                            <span class="item-price">${{ number_format($item['subtotal'], 2) }}</span>
                         </div>
                         @endforeach
                         

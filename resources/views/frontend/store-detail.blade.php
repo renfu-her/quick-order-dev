@@ -123,39 +123,47 @@
                 @endif
                 
                 <div class="product-info">
-                    <h3 class="product-name">{{ $product->name }}</h3>
-                    
-                    @if($product->description)
-                    <p class="product-description">{{ Str::limit($product->description, 100) }}</p>
-                    @endif
-                    
-                    <div class="product-pricing">
-                        @if($product->special_price && $product->special_price < $product->price)
-                        <div class="price-row">
-                            <span class="price-original">${{ number_format($product->price, 2) }}</span>
-                            <span class="price-special">${{ number_format($product->special_price, 2) }}</span>
-                        </div>
-                        @else
-                        <div class="price-row">
-                            <span class="price-regular">${{ number_format($product->price, 2) }}</span>
-                        </div>
-                        @endif
+                    <div class="product-content">
+                        <h3 class="product-name">{{ $product->name }}</h3>
                         
-                        @if($product->hot_price || $product->cold_price)
-                        <div class="variant-prices">
-                            @if($product->hot_price)
-                            <span class="variant-price">🔥 Hot: ${{ number_format($product->hot_price, 2) }}</span>
-                            @endif
-                            @if($product->cold_price)
-                            <span class="variant-price">❄️ Cold: ${{ number_format($product->cold_price, 2) }}</span>
-                            @endif
-                        </div>
+                        @if($product->description)
+                        <p class="product-description">{{ Str::limit($product->description, 100) }}</p>
                         @endif
                     </div>
                     
-                    <button class="btn btn-order" onclick="openOrderModal({{ $product->id }})">
-                        🛒 Quick Order
-                    </button>
+                    <div class="product-bottom">
+                        <div class="product-pricing">
+                            @if($product->special_price && $product->special_price < $product->price)
+                            <div class="price-row">
+                                <span class="price-original">${{ number_format($product->price, 2) }}</span>
+                                <span class="price-special">${{ number_format($product->special_price, 2) }}</span>
+                            </div>
+                            @else
+                            <div class="price-row">
+                                <span class="price-regular">${{ number_format($product->price, 2) }}</span>
+                            </div>
+                            @endif
+                            
+                            @if($product->hot_price || $product->cold_price)
+                            <div class="variant-prices">
+                                @if($product->hot_price)
+                                <span class="variant-price">🔥 Hot: ${{ number_format($product->hot_price, 2) }}</span>
+                                @endif
+                                @if($product->cold_price)
+                                <span class="variant-price">❄️ Cold: ${{ number_format($product->cold_price, 2) }}</span>
+                                @endif
+                            </div>
+                            @endif
+                        </div>
+                        
+                        <button class="btn btn-order" onclick="openAddToCartModal({{ $product->id }})">
+                            @if(auth('member')->check())
+                                🛒 Add to Cart
+                            @else
+                                🔐 Login to Add to Cart
+                            @endif
+                        </button>
+                    </div>
                 </div>
             </div>
             @endforeach
@@ -170,12 +178,12 @@
     </div>
 </div>
 
-<!-- Product Order Modal -->
-<div id="orderModal" class="modal">
+<!-- Add to Cart Modal -->
+<div id="addToCartModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
-            <h3 id="modalProductName">Product Name</h3>
-            <span class="close" onclick="closeOrderModal()">&times;</span>
+            <h3 id="modalProductName">Add to Cart</h3>
+            <span class="close" onclick="closeAddToCartModal()">&times;</span>
         </div>
         
         <div class="modal-body">
@@ -189,7 +197,7 @@
                 </div>
             </div>
             
-            <form id="orderForm" class="order-form">
+            <form id="addToCartForm" class="order-form">
                 @csrf
                 <input type="hidden" id="productId" name="product_id">
                 <input type="hidden" id="storeId" name="store_id" value="{{ $store->id }}">
@@ -250,8 +258,8 @@
                 </div>
                 
                 <div class="modal-actions">
-                    <button type="button" class="btn btn-secondary" onclick="closeOrderModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Place Order</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeAddToCartModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add to Cart</button>
                 </div>
             </form>
         </div>
@@ -331,12 +339,23 @@ document.addEventListener('DOMContentLoaded', function() {
     setInterval(nextSlide, 5000); // Change slide every 5 seconds
 });
 
-function openOrderModal(productId) {
+function openAddToCartModal(productId) {
     const product = products[productId];
     if (!product) return;
     
+    // Check if user is logged in
+    const isLoggedIn = {{ auth('member')->check() ? 'true' : 'false' }};
+    
+    if (!isLoggedIn) {
+        // Show login prompt instead of add to cart modal
+        if (confirm('Please login to add items to cart. Would you like to go to the login page?')) {
+            window.location.href = '{{ route("member.auth") }}';
+        }
+        return;
+    }
+    
     // Update modal content
-    document.getElementById('modalProductName').textContent = product.name;
+    document.getElementById('modalProductName').textContent = 'Add to Cart: ' + product.name;
     document.getElementById('modalProductDescription').textContent = product.description || '';
     document.getElementById('modalProductPrice').textContent = '$' + parseFloat(product.price).toFixed(2);
     document.getElementById('productId').value = productId;
@@ -357,14 +376,14 @@ function openOrderModal(productId) {
     setupIngredients(product);
     
     // Reset form
-    document.getElementById('orderForm').reset();
+    document.getElementById('addToCartForm').reset();
     document.getElementById('quantity').value = 1;
     
     // Update pricing
     updatePricing();
     
     // Show modal
-    document.getElementById('orderModal').style.display = 'block';
+    document.getElementById('addToCartModal').style.display = 'block';
 }
 
 function setupTemperatureOptions(product) {
@@ -399,7 +418,7 @@ function setupIngredients(product) {
         // Add ingredient limit info
         const limitInfo = document.createElement('div');
         limitInfo.className = 'ingredient-limit-info';
-        const limit = product.ingredient_limit || 3;
+        const limit = parseInt(product.ingredient_limit) || 3;
         const limitText = limit === 0 ? 'Unlimited ingredients allowed' : `Maximum ${limit} ingredients allowed`;
         limitInfo.innerHTML = `<small class="text-muted">${limitText}</small>`;
         ingredientsList.appendChild(limitInfo);
@@ -419,8 +438,10 @@ function setupIngredients(product) {
             ingredientsList.appendChild(ingredientItem);
         });
         
-        // Add event listeners for ingredient limit checking
-        setupIngredientLimitHandling(product);
+        // Add event listeners for ingredient limit checking (only if limit > 0)
+        if (limit > 0) {
+            setupIngredientLimitHandling(product);
+        }
     } else {
         ingredientsGroup.style.display = 'none';
     }
@@ -428,9 +449,9 @@ function setupIngredients(product) {
 
 function setupIngredientLimitHandling(product) {
     const ingredientCheckboxes = document.querySelectorAll('input[name="ingredients[]"]');
-    const limit = product.ingredient_limit || 3;
+    const limit = parseInt(product.ingredient_limit) || 3;
     
-    if (limit === 0) return; // No limit
+    if (limit === 0) return; // No limit - unlimited ingredients allowed
     
     ingredientCheckboxes.forEach(checkbox => {
         checkbox.addEventListener('change', function() {
@@ -503,16 +524,16 @@ function updatePricing() {
     document.getElementById('total').textContent = '$' + subtotal.toFixed(2);
 }
 
-function closeOrderModal() {
-    document.getElementById('orderModal').style.display = 'none';
-    document.getElementById('orderForm').reset();
+function closeAddToCartModal() {
+    document.getElementById('addToCartModal').style.display = 'none';
+    document.getElementById('addToCartForm').reset();
 }
 
 // Close modal when clicking outside
 window.onclick = function(event) {
-    const modal = document.getElementById('orderModal');
+    const modal = document.getElementById('addToCartModal');
     if (event.target === modal) {
-        closeOrderModal();
+        closeAddToCartModal();
     }
 }
 
@@ -534,7 +555,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Handle form submission
-document.getElementById('orderForm').addEventListener('submit', function(e) {
+document.getElementById('addToCartForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
     const formData = new FormData(this);
@@ -548,7 +569,7 @@ document.getElementById('orderForm').addEventListener('submit', function(e) {
     const temperature = document.querySelector('input[name="temperature"]:checked')?.value || 'regular';
     formData.append('temperature', temperature);
     
-    fetch('{{ route("store.quick-order") }}', {
+    fetch('{{ route("cart.add") }}', {
         method: 'POST',
         body: formData,
         headers: {
@@ -558,15 +579,19 @@ document.getElementById('orderForm').addEventListener('submit', function(e) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            alert('Order placed successfully! Order ID: ' + data.order_id);
-            closeOrderModal();
+            alert('Item added to cart successfully!');
+            closeAddToCartModal();
+            // Optionally redirect to cart or show cart count
+            if (confirm('Would you like to view your cart?')) {
+                window.location.href = '{{ route("cart.index") }}';
+            }
         } else {
-            alert('Error: ' + (data.message || 'Failed to place order'));
+            alert('Error: ' + (data.message || 'Failed to add item to cart'));
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('An error occurred while placing the order');
+        alert('An error occurred while adding item to cart');
     });
 });
 </script>
