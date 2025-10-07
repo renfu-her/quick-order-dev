@@ -1245,3 +1245,14 @@ main {
     background: #fff5f5;
 }
 
+/* ==================== Header overrides (orange + cart inline) ==================== */
+.cart-badge {
+    background: transparent !important;
+    color: #f77f00 !important;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+}
+
+.cart-badge:hover { color: #cc6e00 !important; }
+.cart-inline { order: -1; }
+
