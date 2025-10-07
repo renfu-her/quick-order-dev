@@ -52,7 +52,7 @@
 
 .thumbnail:hover,
 .thumbnail.active {
-    border-color: #e63946;
+    border-color: #f77f00;
 }
 
 /* ==================== Product Details ==================== */
@@ -66,12 +66,12 @@
 .product-price {
     font-size: 2rem;
     font-weight: bold;
-    color: #e63946;
+    color: #f77f00;
     margin-bottom: 1.5rem;
 }
 
 .product-price .special-price {
-    color: #e63946;
+    color: #f77f00;
 }
 
 .product-price .original-price {
@@ -126,14 +126,14 @@
 }
 
 .temperature-option input[type="radio"]:checked + label {
-    border-color: #e63946;
+    border-color: #f77f00;
     background: #fff5f5;
-    color: #e63946;
+    color: #f77f00;
     font-weight: 600;
 }
 
 .temperature-option label:hover {
-    border-color: #e63946;
+    border-color: #f77f00;
     background: #fff5f5;
 }
 
@@ -161,7 +161,7 @@
 }
 
 .ingredient-item:hover {
-    border-color: #e63946;
+    border-color: #f77f00;
     background: #fff5f5;
 }
 
@@ -176,7 +176,7 @@
 
 .ingredient-price {
     font-weight: 600;
-    color: #e63946;
+    color: #f77f00;
 }
 
 /* ==================== Add to Cart Section ==================== */
@@ -194,7 +194,7 @@
 }
 
 .qty-btn {
-    background: #e63946;
+    background: #f77f00;
     color: white;
     border: none;
     width: 40px;
@@ -206,7 +206,7 @@
 }
 
 .qty-btn:hover {
-    background: #d62839;
+    background: #cc6e00;
 }
 
 .qty-value {
@@ -218,7 +218,7 @@
 
 .add-to-cart-btn {
     flex: 1;
-    background: #e63946;
+    background: #f77f00;
     color: white;
     border: none;
     padding: 1rem 2rem;
@@ -230,6 +230,6 @@
 }
 
 .add-to-cart-btn:hover {
-    background: #d62839;
+    background: #cc6e00;
 }
 

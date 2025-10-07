@@ -35,7 +35,7 @@
     margin-bottom: 1.5rem;
     color: #333;
     padding-bottom: 0.75rem;
-    border-bottom: 2px solid #e63946;
+    border-bottom: 2px solid #f77f00;
 }
 
 /* ==================== Payment Methods ==================== */
@@ -56,7 +56,7 @@
 }
 
 .payment-option:hover {
-    border-color: #e63946;
+    border-color: #f77f00;
     background: #fff5f5;
 }
 
@@ -95,13 +95,13 @@
 
 .item-total {
     font-weight: 600;
-    color: #e63946;
+    color: #f77f00;
 }
 
 .summary-totals {
     margin-top: 1.5rem;
     padding-top: 1.5rem;
-    border-top: 2px solid #e63946;
+    border-top: 2px solid #f77f00;
 }
 
 .summary-totals .summary-row {
@@ -111,7 +111,7 @@
 .summary-totals .summary-row:last-child {
     font-size: 1.25rem;
     font-weight: bold;
-    color: #e63946;
+    color: #f77f00;
 }
 
 .summary-item {
@@ -136,6 +136,6 @@
 
 .item-price {
     font-weight: 600;
-    color: #e63946;
+    color: #f77f00;
 }
 

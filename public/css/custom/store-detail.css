@@ -39,7 +39,7 @@
 .store-hero-placeholder {
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, #e63946 0%, #f77f00 100%);
+    background: linear-gradient(135deg, #ff8c1a 0%, #f77f00 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -116,7 +116,7 @@
 }
 
 .btn-map:hover {
-    background: #e63946;
+    background: #f77f00;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
@@ -338,7 +338,7 @@
 .price-special {
     font-size: 1.2rem;
     font-weight: 700;
-    color: #e63946;
+    color: #f77f00;
 }
 
 .price-regular {
@@ -360,7 +360,7 @@
 
 .btn-order {
     width: 100%;
-    background: #e63946;
+    background: #f77f00;
     color: white;
     border: none;
     padding: 0.75rem 1rem;
@@ -371,7 +371,7 @@
 }
 
 .btn-order:hover {
-    background: #d62828;
+    background: #cc6e00;
     transform: translateY(-2px);
 }
 
@@ -456,7 +456,7 @@
 }
 
 .close:hover {
-    color: #e63946;
+    color: #f77f00;
 }
 
 .modal-body {
@@ -485,7 +485,7 @@
 .product-info .price {
     font-size: 1.2rem;
     font-weight: 700;
-    color: #e63946;
+    color: #f77f00;
 }
 
 .order-form {
@@ -519,7 +519,7 @@
 .form-group select:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: #e63946;
+    border-color: #f77f00;
 }
 
 .modal-actions {
@@ -548,7 +548,7 @@
 
 .btn-primary {
     flex: 1;
-    background: #e63946;
+    background: #f77f00;
     color: white;
     border: none;
     padding: 0.75rem 1rem;
@@ -559,7 +559,7 @@
 }
 
 .btn-primary:hover {
-    background: #d62828;
+    background: #cc6e00;
 }
 
 /* Responsive Design */
@@ -669,17 +669,17 @@
 }
 
 .temperature-option:hover {
-    border-color: #e63946;
+    border-color: #f77f00;
     background: #fff5f5;
 }
 
 .temperature-option input[type="radio"] {
     margin-right: 0.5rem;
-    accent-color: #e63946;
+    accent-color: #f77f00;
 }
 
 .temperature-option input[type="radio"]:checked + .temperature-label {
-    color: #e63946;
+    color: #f77f00;
     font-weight: 600;
 }
 
@@ -740,7 +740,7 @@
 }
 
 .ingredient-option:hover {
-    border-color: #e63946;
+    border-color: #f77f00;
     background: #fff5f5;
 }
 
@@ -750,7 +750,7 @@
 }
 
 .ingredient-option input[type="checkbox"]:checked + .ingredient-label {
-    color: #e63946;
+    color: #f77f00;
     font-weight: 600;
 }
 

@@ -79,7 +79,7 @@
 .item-price {
     font-size: 1.1rem;
     font-weight: 600;
-    color: #e63946;
+    color: #f77f00;
 }
 
 /* ==================== Item Actions ==================== */
@@ -99,7 +99,7 @@
 }
 
 .quantity-btn {
-    background: #e63946;
+    background: #f77f00;
     color: white;
     border: none;
     width: 30px;
@@ -134,7 +134,7 @@
 
 .quantity-input:focus {
     outline: none;
-    border-color: #e63946;
+    border-color: #f77f00;
 }
 
 .remove-btn {
@@ -180,7 +180,7 @@
     font-weight: bold;
     margin-top: 1rem;
     padding-top: 1.5rem;
-    border-top: 2px solid #e63946;
+    border-top: 2px solid #f77f00;
 }
 
 .summary-row.discount {
@@ -193,7 +193,7 @@
     font-weight: bold;
     margin-top: 1rem;
     padding-top: 1.5rem;
-    border-top: 2px solid #e63946;
+    border-top: 2px solid #f77f00;
 }
 
 /* ==================== Coupon Form ==================== */
@@ -225,6 +225,6 @@
 
 .coupon-input:focus {
     outline: none;
-    border-color: #e63946;
+    border-color: #f77f00;
 }
 

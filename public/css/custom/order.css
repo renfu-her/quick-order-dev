@@ -20,7 +20,7 @@
 .confirmation-header {
     text-align: center;
     padding: 3rem 2rem;
-    background: linear-gradient(135deg, #e63946 0%, #f77f00 100%);
+    background: linear-gradient(135deg, #ff8c1a 0%, #f77f00 100%);
     color: white;
     border-radius: 10px 10px 0 0;
 }
@@ -71,11 +71,11 @@
 .order-number p {
     font-size: 2rem;
     font-weight: bold;
-    color: #e63946;
+    color: #f77f00;
 }
 
 .order-number strong {
-    color: #e63946;
+    color: #f77f00;
     font-size: 1.25rem;
 }
 
@@ -97,7 +97,7 @@
     font-size: 1.25rem;
     margin-bottom: 1rem;
     padding-bottom: 0.5rem;
-    border-bottom: 2px solid #e63946;
+    border-bottom: 2px solid #f77f00;
 }
 
 .detail-row {
@@ -145,7 +145,7 @@
 
 .item-total {
     font-weight: 600;
-    color: #e63946;
+    color: #f77f00;
 }
 
 /* ==================== Status Badge ==================== */
@@ -187,7 +187,7 @@
 }
 
 .btn-continue {
-    background: #e63946;
+    background: #f77f00;
     color: white;
     text-decoration: none;
     padding: 1rem 2rem;
@@ -197,6 +197,6 @@
 }
 
 .btn-continue:hover {
-    background: #d62839;
+    background: #cc6e00;
 }
 

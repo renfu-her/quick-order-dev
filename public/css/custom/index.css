@@ -5,7 +5,7 @@
 /* ==================== Hero Section ==================== */
 
 .hero {
-    background: linear-gradient(135deg, #e63946 0%, #f77f00 100%);
+    background: linear-gradient(135deg, #ff8c1a 0%, #f77f00 100%);
     color: white;
     padding: 4rem 0;
     text-align: center;
@@ -112,9 +112,9 @@
 }
 
 .btn-map:hover {
-    background: #e63946;
+    background: #f77f00;
     color: white;
-    border-color: #e63946;
+    border-color: #f77f00;
 }
 
 .store-actions {
@@ -136,12 +136,12 @@
 }
 
 .store-actions .btn-primary {
-    background: #e63946;
+    background: #f77f00;
     color: white;
 }
 
 .store-actions .btn-primary:hover {
-    background: #d62828;
+    background: #cc6e00;
 }
 
 /* ==================== Ads Section ==================== */
@@ -181,7 +181,7 @@
 
 .ad-card h3 {
     margin-bottom: 0.5rem;
-    color: #e63946;
+    color: #f77f00;
 }
 
 /* ==================== Products Section ==================== */
@@ -248,12 +248,12 @@
 .product-price {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #e63946;
+    color: #f77f00;
     margin-bottom: 1rem;
 }
 
 .product-price .special-price {
-    color: #e63946;
+    color: #f77f00;
 }
 
 .product-price .original-price {
