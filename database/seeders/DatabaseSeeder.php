@@ -24,8 +24,9 @@ class DatabaseSeeder extends Seeder
 
         // Seed sample data
         $this->call([
-            MemberSeeder::class,
+            StoreSeeder::class,
             ProductSeeder::class,
+            MemberSeeder::class,  // After products for order creation
             AdSeeder::class,
             CouponSeeder::class,
         ]);
@@ -39,5 +40,12 @@ class DatabaseSeeder extends Seeder
         $this->command->info('=== Member Credentials (Frontend) ===');
         $this->command->info('Email: member@test.com');
         $this->command->info('Password: password');
+        $this->command->info('');
+        $this->command->info('=== Seeded Data Summary ===');
+        $this->command->info('Stores: 5 (4 active, 1 inactive)');
+        $this->command->info('Members: 5 (with sample orders and carts)');
+        $this->command->info('Products: 8');
+        $this->command->info('Ads: 3');
+        $this->command->info('Coupons: 4');
     }
 }

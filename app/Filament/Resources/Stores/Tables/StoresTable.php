@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\Resources\Products\Tables;
+namespace App\Filament\Resources\Stores\Tables;
 
-use App\Models\Product;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -13,11 +12,10 @@ use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 
-class ProductsTable
+class StoresTable
 {
     public static function configure(Table $table): Table
     {
@@ -32,27 +30,19 @@ class ProductsTable
                     ->searchable()
                     ->sortable(),
                 
-                TextColumn::make('store.name')
-                    ->label('Store')
+                TextColumn::make('address')
                     ->searchable()
-                    ->sortable()
-                    ->badge(),
+                    ->limit(50),
                 
-                TextColumn::make('category')
+                TextColumn::make('phone')
                     ->searchable()
-                    ->sortable()
-                    ->badge(),
+                    ->copyable(),
                 
-                TextColumn::make('price')
-                    ->money('USD')
-                    ->sortable(),
+                TextColumn::make('email')
+                    ->searchable()
+                    ->toggleable(),
                 
-                TextColumn::make('special_price')
-                    ->money('USD')
-                    ->sortable()
-                    ->placeholder('—'),
-                
-                IconColumn::make('is_available')
+                IconColumn::make('is_active')
                     ->boolean()
                     ->sortable(),
                 
@@ -62,19 +52,11 @@ class ProductsTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                SelectFilter::make('store_id')
-                    ->relationship('store', 'name')
-                    ->searchable()
-                    ->preload(),
-                
-                SelectFilter::make('category')
-                    ->options(fn () => Product::query()->pluck('category', 'category')->unique()),
-                
-                TernaryFilter::make('is_available')
-                    ->label('Availability')
-                    ->placeholder('All products')
-                    ->trueLabel('Available only')
-                    ->falseLabel('Unavailable only'),
+                TernaryFilter::make('is_active')
+                    ->label('Status')
+                    ->placeholder('All stores')
+                    ->trueLabel('Active only')
+                    ->falseLabel('Inactive only'),
             ])
             ->recordActions([
                 ViewAction::make(),
@@ -88,3 +70,4 @@ class ProductsTable
             ]);
     }
 }
+

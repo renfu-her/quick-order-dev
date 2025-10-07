@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Products\Schemas;
 
+use App\Models\Store;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -20,6 +22,20 @@ class ProductForm
             ->components([
                 Section::make('Product Information')
                     ->schema([
+                        Select::make('store_id')
+                            ->label('Store')
+                            ->relationship('store', 'name')
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->createOptionForm([
+                                TextInput::make('name')->required(),
+                                Textarea::make('address')->required(),
+                                TextInput::make('phone'),
+                                TextInput::make('email')->email(),
+                            ])
+                            ->columnSpanFull(),
+                        
                         TextInput::make('name')
                             ->required()
                             ->maxLength(255)
