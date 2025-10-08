@@ -133,12 +133,17 @@ class MemberSeeder extends Seeder
         ]);
 
         foreach ($products as $product) {
+            $quantity = rand(1, 2);
+            $unitPrice = $product->getEffectivePrice();
+
             CartItem::create([
                 'cart_id' => $cart->id,
                 'product_id' => $product->id,
-                'quantity' => rand(1, 2),
+                'product_name' => $product->name,
+                'quantity' => $quantity,
                 'temperature' => ['hot', 'cold', 'none'][rand(0, 2)],
-                'unit_price' => $product->getEffectivePrice(),
+                'unit_price' => $unitPrice,
+                'subtotal' => $unitPrice * $quantity,
             ]);
         }
     }
