@@ -31,7 +31,7 @@
                     <li><a href="#">Contact</a></li>
                 </ul>
                 
-                <div style="display: flex; gap: 1rem; align-items: center;">
+                <div style="display: flex; gap: 1rem; align-items: center; position: relative;">
                     @auth('member')
                         @php
                             $cart = \App\Models\Cart::where('member_id', auth('member')->id())
@@ -46,7 +46,17 @@
                                 <span class="cart-count">{{ $cartQty }}</span>
                             @endif
                         </a>
-                        <span style="color: #666;">👤 {{ Auth::guard('member')->user()->name }}</span>
+                        <div class="user-menu">
+                            <button class="user-trigger" type="button" aria-haspopup="true" aria-expanded="false">
+                                <span class="user-icon">👤</span>
+                                <span class="user-name">{{ Auth::guard('member')->user()->name }}</span>
+                                <span class="user-caret">▾</span>
+                            </button>
+                            <div class="user-dropdown" role="menu">
+                                <a href="{{ route('member.profile') }}" role="menuitem">Profile</a>
+                                <a href="{{ route('member.orders') }}" role="menuitem">My Orders</a>
+                            </div>
+                        </div>
                         <form action="{{ route('member.logout') }}" method="POST" style="margin: 0;">
                             @csrf
                             <button type="submit" style="background: none; border: none; color: #f77f00; cursor: pointer; font-weight: 500;">
@@ -135,6 +145,29 @@
     
     <!-- Toast Notification System -->
     <script src="{{ asset('js/toast.js?v=' . time()) }}"></script>
+    <script>
+    // Simple user dropdown toggle
+    document.addEventListener('DOMContentLoaded', function () {
+        const menu = document.querySelector('.user-menu');
+        if (!menu) return;
+        const trigger = menu.querySelector('.user-trigger');
+        const dropdown = menu.querySelector('.user-dropdown');
+        if (!trigger || !dropdown) return;
+
+        const toggle = () => dropdown.classList.toggle('open');
+        const close = () => dropdown.classList.remove('open');
+
+        trigger.addEventListener('click', function (e) {
+            e.stopPropagation();
+            toggle();
+        });
+
+        document.addEventListener('click', function () { close(); });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') close();
+        });
+    });
+    </script>
     
     @stack('scripts')
 </body>

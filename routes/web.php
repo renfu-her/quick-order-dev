@@ -5,9 +5,11 @@ declare(strict_types=1);
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MemberAuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StoreController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 // Member Auth Routes
@@ -54,3 +56,11 @@ Route::get('/toast-demo/flash/{type}', function ($type) {
     return redirect()->route('toast.demo')
         ->with($type, $messages[$type] ?? 'Test message');
 })->name('toast.demo.flash');
+
+// Member pages (profile, orders)
+Route::middleware('auth:member')->group(function () {
+    Route::get('/member/profile', [MemberController::class, 'profile'])->name('member.profile');
+    Route::post('/member/profile', [MemberController::class, 'updateProfile'])->name('member.profile.update');
+    Route::post('/member/password', [MemberController::class, 'updatePassword'])->name('member.password.update');
+    Route::get('/member/orders', [MemberController::class, 'orders'])->name('member.orders');
+});
