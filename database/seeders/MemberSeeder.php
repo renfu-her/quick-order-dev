@@ -57,7 +57,15 @@ class MemberSeeder extends Seeder
         ];
 
         foreach ($members as $memberData) {
-            $member = Member::create($memberData);
+            $member = Member::updateOrCreate(
+                ['email' => $memberData['email']],
+                [
+                    'name' => $memberData['name'],
+                    'phone' => $memberData['phone'],
+                    'password' => $memberData['password'],
+                    'is_active' => $memberData['is_active'],
+                ]
+            );
             
             // Create sample orders for some members
             if (in_array($member->email, ['member@test.com', 'john@example.com'])) {
@@ -73,6 +81,10 @@ class MemberSeeder extends Seeder
 
     private function createSampleOrderForMember(Member $member): void
     {
+        if (Order::where('member_id', $member->id)->exists()) {
+            return;
+        }
+
         $products = Product::limit(3)->get();
         
         if ($products->isEmpty()) {
@@ -127,14 +139,24 @@ class MemberSeeder extends Seeder
             return;
         }
 
-        $cart = Cart::create([
+        $cart = Cart::firstOrCreate([
             'member_id' => $member->id,
+        ], [
             'session_id' => null,
+            'subtotal' => 0,
+            'discount_amount' => 0,
+            'total_amount' => 0,
+            'status' => 'active',
         ]);
+
+        $cart->items()->delete();
+
+        $cartSubtotal = 0;
 
         foreach ($products as $product) {
             $quantity = rand(1, 2);
             $unitPrice = $product->getEffectivePrice();
+            $itemSubtotal = $unitPrice * $quantity;
 
             CartItem::create([
                 'cart_id' => $cart->id,
@@ -143,9 +165,17 @@ class MemberSeeder extends Seeder
                 'quantity' => $quantity,
                 'temperature' => ['hot', 'cold', 'none'][rand(0, 2)],
                 'unit_price' => $unitPrice,
-                'subtotal' => $unitPrice * $quantity,
+                'subtotal' => $itemSubtotal,
             ]);
+
+            $cartSubtotal += $itemSubtotal;
         }
+
+        $cart->update([
+            'subtotal' => $cartSubtotal,
+            'discount_amount' => 0,
+            'total_amount' => $cartSubtotal,
+        ]);
     }
 }
 
