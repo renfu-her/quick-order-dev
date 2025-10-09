@@ -23,7 +23,9 @@ class CouponResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'code';
 
-    protected static ?int $navigationSort = 4;
+    protected static ?string $navigationGroup = 'Sales';
+
+    protected static ?int $navigationSort = 2;
 
     public static function form(Schema $schema): Schema
     {

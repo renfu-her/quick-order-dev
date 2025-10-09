@@ -23,7 +23,9 @@ class AdResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'title';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?string $navigationGroup = 'Marketing';
+
+    protected static ?int $navigationSort = 1;
 
     public static function form(Schema $schema): Schema
     {

@@ -14,6 +14,7 @@ A production-ready food ordering system built with **Laravel 11** and **Filament
 - [Database Setup](#database-setup)
 - [Running the Application](#running-the-application)
 - [Default Accounts](#default-accounts)
+- [Backend Admin Panel Guide](#backend-admin-panel-guide)
 - [Project Structure](#project-structure)
 - [Key Features Guide](#key-features-guide)
 - [Development](#development)
@@ -254,6 +255,44 @@ This starts Laravel server, queue worker, logs, and Vite simultaneously.
 - `SAVE5` - $5 off
 - `SUMMER20` - 20% off
 - `FREESHIP` - Free shipping
+
+---
+
+## 🎛 Backend Admin Panel Guide
+
+For detailed backend administration instructions, see **[BACKEND_GUIDE.md](BACKEND_GUIDE.md)**.
+
+For backend optimization details and technical documentation, see **[BACKEND_COMPLETE.md](BACKEND_COMPLETE.md)**.
+
+### Navigation Structure
+
+The admin panel is organized into the following groups:
+
+**🏪 Store Management**
+- Stores - Manage physical/virtual stores
+- Products - Manage product catalog
+
+**💰 Sales**
+- Orders - View and manage customer orders
+- Coupons - Create and manage discount codes
+
+**📢 Marketing**
+- Ads - Manage promotional banners
+
+**👥 Customer Management**
+- Members - Manage customer accounts
+
+**⚙️ System Management**
+- Users - Manage admin users
+
+### Quick Tips
+
+1. **Creating Products**: Navigate to `Store Management > Products > Create`
+2. **Processing Orders**: Go to `Sales > Orders`, click order number, then `Edit` to update status
+3. **Creating Coupons**: Navigate to `Sales > Coupons > Create`
+4. **Managing Ads**: Go to `Marketing > Ads` to create promotional banners
+
+For complete backend usage instructions, refer to [BACKEND_GUIDE.md](BACKEND_GUIDE.md).
 
 ---
 
