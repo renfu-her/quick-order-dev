@@ -14,6 +14,7 @@ use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class CouponResource extends Resource
 {
@@ -23,7 +24,7 @@ class CouponResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'code';
 
-    protected static ?string $navigationGroup = 'Sales';
+    protected static string|UnitEnum|null $navigationGroup = 'Sales';
 
     protected static ?int $navigationSort = 2;
 
